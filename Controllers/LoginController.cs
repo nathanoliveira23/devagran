@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Devagran.Dtos;
+using Devagran.Models;
+using Devagran.Services;
 
 namespace Devagran.Controllers
 {
@@ -27,7 +29,45 @@ namespace Devagran.Controllers
         {
             try 
             {
-                throw new Exception("Erro ao efetuar o login.");
+                if (!String.IsNullOrEmpty(loginRequest.Email) && !String.IsNullOrEmpty(loginRequest.Password) && String.IsNullOrWhiteSpace(loginRequest.Email) && String.IsNullOrWhiteSpace(loginRequest.Password))
+                {
+                    string email = "nathan@email.com";
+                    string password = "coringao1910";
+
+                    if (loginRequest.Email == email && loginRequest.Password == password)
+                    {
+                        User user = new User() 
+                        {
+                            Id = 12,
+                            Name = "Nathan Oliveira",
+                            Email = loginRequest.Email,
+                        };
+
+                        return Ok(new LoginResponseDto()
+                        {
+                          Name = user.Name,
+                          Email = user.Email,
+                          Token = TokenService.CreateToken(user),
+                        });
+                    }
+                    else
+                    {
+                        return BadRequest(new ErrorResponseDto()
+                        {
+                            Description = "O usuário não preencheu os dados de login corretamente.",
+                            Status = StatusCodes.Status400BadRequest
+                        });
+                    }
+                }
+                else
+                {
+                    return BadRequest(new ErrorResponseDto()
+                    {
+                        Description = "O usuário não preencheu os dados de login corretamente.",
+                        Status = StatusCodes.Status400BadRequest
+                        
+                    });
+                }
             }
             catch (Exception ex)
             {
