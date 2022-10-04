@@ -14,7 +14,7 @@ namespace Devagran.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : Controller
+    public class LoginController : ControllerBase
     {
         private readonly ILogger<LoginController> _logger;
 
@@ -29,7 +29,10 @@ namespace Devagran.Controllers
         {
             try 
             {
-                if (!String.IsNullOrEmpty(loginRequest.Email) && !String.IsNullOrEmpty(loginRequest.Password) && String.IsNullOrWhiteSpace(loginRequest.Email) && String.IsNullOrWhiteSpace(loginRequest.Password))
+                if (!String.IsNullOrEmpty(loginRequest.Email) &&
+                    !String.IsNullOrEmpty(loginRequest.Password) && 
+                    !String.IsNullOrWhiteSpace(loginRequest.Email) && 
+                    !String.IsNullOrWhiteSpace(loginRequest.Password))
                 {
                     string email = "nathan@email.com";
                     string password = "coringao1910";
