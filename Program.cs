@@ -2,6 +2,9 @@ using Devagran;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Devagran.Context;
+using Microsoft.EntityFrameworkCore;
+
 internal class Program
 {
   private static void Main(string[] args)
@@ -9,12 +12,15 @@ internal class Program
     var builder = WebApplication.CreateBuilder(args);
 
     // Add services to the container.
+    builder.Services.AddDbContext<DevagranContext>(options =>
+      options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
+    // JWT config
     var encryptedKey = Encoding.ASCII.GetBytes(JWTToken.JwtToken);
     builder.Services.AddAuthentication(auth => 
     {
