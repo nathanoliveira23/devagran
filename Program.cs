@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Devagran.Context;
 using Microsoft.EntityFrameworkCore;
+using Devagran.Repository;
+using Devagran.Repository.Impl;
 
 internal class Program
 {
@@ -14,6 +16,8 @@ internal class Program
     // Add services to the container.
     builder.Services.AddDbContext<DevagranContext>(options =>
       options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+    builder.Services.AddScoped<IUserRepository, UserRepositoryImpl>();
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
