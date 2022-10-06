@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Devagran.Dtos;
 using Devagran.Models;
 using Devagran.Services;
+using Devagran.Repository;
+using Devagran.Ultils;
 
 namespace Devagran.Controllers
 {
@@ -17,10 +19,12 @@ namespace Devagran.Controllers
     public class LoginController : ControllerBase
     {
         private readonly ILogger<LoginController> _logger;
+        private readonly IUserRepository _userRepository;
 
-        public LoginController(ILogger<LoginController> logger)
+        public LoginController(ILogger<LoginController> logger, IUserRepository userRepository)
         {
             _logger = logger;
+            _userRepository = userRepository;
         }
 
         [HttpPost]
@@ -34,33 +38,27 @@ namespace Devagran.Controllers
                     !String.IsNullOrWhiteSpace(loginRequest.Email) && 
                     !String.IsNullOrWhiteSpace(loginRequest.Password))
                 {
-                    string email = "nathan@email.com";
-                    string password = "coringao1910";
+                    User user = _userRepository.GetUserLogin(loginRequest.Email.ToLower(), MD5Ultils.MD5HashGenerator(loginRequest.Password));
 
-                    if (loginRequest.Email == email && loginRequest.Password == password)
+                    if (user != null)
                     {
-                        User user = new User() 
-                        {
-                            Id = 12,
-                            Name = "Nathan Oliveira",
-                            Email = loginRequest.Email,
-                        };
-
                         return Ok(new LoginResponseDto()
                         {
-                          Name = user.Name,
-                          Email = user.Email,
-                          Token = TokenService.CreateToken(user),
+                            Name = user.Name,
+                            Email = user.Email,
+                            Token = TokenService.CreateToken(user),
                         });
                     }
                     else
                     {
                         return BadRequest(new ErrorResponseDto()
                         {
-                            Description = "O usuário não preencheu os dados de login corretamente.",
+                            Description = "E-mail ou senha inválidos.",
                             Status = StatusCodes.Status400BadRequest
                         });
                     }
+
+                    
                 }
                 else
                 {

@@ -9,18 +9,23 @@ namespace Devagran.Repository.Impl
 {
   public class UserRepositoryImpl : IUserRepository
   {
-    public UserRepositoryImpl(DevagranContext context) => _context = context;
-    private readonly DevagranContext _context;
+      public UserRepositoryImpl(DevagranContext context) => _context = context;
+      private readonly DevagranContext _context;
 
-    public void Save(User user)
-    {
-        _context.Users.Add(user);
-        _context.SaveChanges();
-    }
+      public void Save(User user)
+      {
+          _context.Users.Add(user);
+          _context.SaveChanges();
+      }
 
-    public bool EmailVerify(string email)
-    {
-        return _context.Users.Any(x => x.Email == email);
-    }
+      public bool EmailVerify(string email)
+      {
+          return _context.Users.Any(x => x.Email == email);
+      }
+
+      public User GetUserLogin(string email, string password)
+      {
+          return _context.Users.FirstOrDefault(x => x.Email == email && x.Password == password);
+      }
   }
 }

@@ -46,6 +46,7 @@ namespace Devagran.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult SaveUser([FromBody] User user)
         {
             try
@@ -90,7 +91,7 @@ namespace Devagran.Controllers
                         });
                     }
 
-                    return Ok(user);
+                    return Ok("Usuário salvo com sucesso.");
                 }
                 else
                 {
