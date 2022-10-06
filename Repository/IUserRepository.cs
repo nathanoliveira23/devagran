@@ -9,5 +9,6 @@ namespace Devagran.Repository
     public interface IUserRepository
     {
         public void Save(User user);
+        public bool EmailVerify(string email);
     }
 }

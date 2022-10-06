@@ -17,5 +17,10 @@ namespace Devagran.Repository.Impl
         _context.Users.Add(user);
         _context.SaveChanges();
     }
+
+    public bool EmailVerify(string email)
+    {
+        return _context.Users.Any(x => x.Email == email);
+    }
   }
 }

@@ -3,6 +3,7 @@ using Devagran.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Devagran.Repository;
+using Devagran.Ultils;
 
 namespace Devagran.Controllers
 {
@@ -73,17 +74,33 @@ namespace Devagran.Controllers
                             Errors = errors
                         });
 
-                    _userRepository.Save(user);
+                    user.Password = MD5Ultils.MD5HashGenerator(user.Password);
+                    user.Email = user.Email.ToLower();
+                    
+                    if (_userRepository.EmailVerify(user.Email))
+                    {
+                        _userRepository.Save(user);
+                    }
+                    else
+                    {
+                        return BadRequest(new ErrorResponseDto()
+                        {
+                            Description = "Usuário já cadastrado.",
+                            Status = StatusCodes.Status400BadRequest
+                        });
+                    }
 
                     return Ok(user);
                 }
                 else
                 {
                     // código caso o usuário seja nulo
-                    return BadRequest("Usuário inválido.");
+                    return BadRequest(new ErrorResponseDto()
+                    {
+                        Description = "É necessário informar todos os campos.",
+                        Status = StatusCodes.Status400BadRequest
+                    });
                 }
-
-                return Ok();
             }
             catch (Exception ex)
             {
