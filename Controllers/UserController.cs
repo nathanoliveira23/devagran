@@ -77,7 +77,7 @@ namespace Devagran.Controllers
                     user.Password = MD5Ultils.MD5HashGenerator(user.Password);
                     user.Email = user.Email.ToLower();
                     
-                    if (_userRepository.EmailVerify(user.Email))
+                    if (!_userRepository.EmailVerify(user.Email))
                     {
                         _userRepository.Save(user);
                     }
