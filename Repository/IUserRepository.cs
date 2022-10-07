@@ -11,5 +11,6 @@ namespace Devagran.Repository
         public void Save(User user);
         public bool EmailVerify(string email);
         public User GetUserLogin(string email, string password);
-    }
+        public User GetUserById(int id);
+  }
 }

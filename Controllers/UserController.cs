@@ -11,28 +11,24 @@ namespace Devagran.Controllers
     [Route("api/[controller]")]
     public class UserController : BaseController
     {
-        public UserController(ILogger<UserController> logger, IUserRepository userRepository)
+        public UserController(ILogger<UserController> logger, IUserRepository userRepository) : base(userRepository)
         {
             _logger = logger;
-            _userRepository = userRepository;
         }
         private readonly ILogger<UserController> _logger;
-        private readonly IUserRepository _userRepository;
 
         [HttpGet]
         public IActionResult GetUser()
         {
             try
             {
-                User user = new User()
-                {
-                    Id = 1,
-                    Name = "Nathan",
-                    Email = "nathan@email.com",
-                    Password = "1234"
-                };
+                User user = ReadToken();
 
-                return Ok(user);
+                return Ok(new UserResponseDto
+                {
+                    Name = user.Name,
+                    Email = user.Email
+                });
             }
             catch (Exception ex)
             {

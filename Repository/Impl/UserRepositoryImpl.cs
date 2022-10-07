@@ -27,5 +27,10 @@ namespace Devagran.Repository.Impl
       {
           return _context.Users.FirstOrDefault(x => x.Email == email && x.Password == password);
       }
+
+      public User GetUserById(int id)
+      {
+          return _context.Users.FirstOrDefault(x => x.Id == id);
+      }
   }
 }
