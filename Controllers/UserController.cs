@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Devagran.Repository;
 using Devagran.Ultils;
+using Devagran.Services;
 
 namespace Devagran.Controllers
 {
@@ -43,23 +44,23 @@ namespace Devagran.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult SaveUser([FromBody] User user)
+        public IActionResult SaveUser([FromForm] UserRequestDto userRequestDto)
         {
             try
             {
-                if (user != null)
+                if (userRequestDto != null)
                 {
                     List<string> errors = new List<string>();
 
-                    if (String.IsNullOrEmpty(user.Name) || String.IsNullOrWhiteSpace(user.Name))
+                    if (String.IsNullOrEmpty(userRequestDto.Name) || String.IsNullOrWhiteSpace(userRequestDto.Name))
                     {
                         errors.Add("Nome inválido.");
                     }
-                    if (String.IsNullOrEmpty(user.Email) || String.IsNullOrWhiteSpace(user.Email) || !user.Email.Contains("@"))
+                    if (String.IsNullOrEmpty(userRequestDto.Email) || String.IsNullOrWhiteSpace(userRequestDto.Email) || !userRequestDto.Email.Contains("@"))
                     {
                         errors.Add("E-mail inválido.");
                     }
-                    if (String.IsNullOrEmpty(user.Password) || String.IsNullOrWhiteSpace(user.Password))
+                    if (String.IsNullOrEmpty(userRequestDto.Password) || String.IsNullOrWhiteSpace(userRequestDto.Password))
                     {
                         errors.Add("Senha inválida.");
                     }
@@ -70,6 +71,17 @@ namespace Devagran.Controllers
                             Status = StatusCodes.Status400BadRequest,
                             Errors = errors
                         });
+
+                    CosmicService cosmicService = new CosmicService();
+
+                    User user = new User()
+                    {
+                        Name = userRequestDto.Name,
+                        Email = userRequestDto.Email,
+                        Password = userRequestDto.Password,
+                        ImageProfile = cosmicService.ImageUpload(new ImageDto { Image = userRequestDto.ImageProfile, Title = userRequestDto.Name.Replace(" ", "") }),
+                    };
+
 
                     user.Password = MD5Ultils.MD5HashGenerator(user.Password);
                     user.Email = user.Email.ToLower();
