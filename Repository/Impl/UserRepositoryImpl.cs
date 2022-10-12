@@ -32,5 +32,11 @@ namespace Devagran.Repository.Impl
       {
           return _context.Users.FirstOrDefault(x => x.Id == id);
       }
+
+      public void UpdateUser(User user)
+      {
+          _context.Users.Update(user);
+          _context.SaveChanges();
+      }
   }
 }

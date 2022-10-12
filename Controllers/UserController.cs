@@ -121,5 +121,55 @@ namespace Devagran.Controllers
                 });
             }
         }
+
+        [HttpPut]
+        public IActionResult UpdateUser([FromForm] UserRequestDto userRequestDto)
+        {
+            try
+            {
+                User user = ReadToken();
+
+                if (userRequestDto != null)
+                {
+                    List<string> errors = new List<string>();
+
+                    if (String.IsNullOrEmpty(userRequestDto.Name) || String.IsNullOrWhiteSpace(userRequestDto.Name))
+                        errors.Add("Nome inválido!");
+
+                    if (errors.Count > 0) 
+                    {
+                        return BadRequest(new ErrorResponseDto()
+                        {
+                            Status = StatusCodes.Status400BadRequest,
+                            Errors = errors
+                        });
+                    }
+                    else
+                    {
+                        CosmicService cosmicService = new CosmicService();
+
+                        user.ImageProfile = cosmicService.ImageUpload(new ImageDto 
+                        {
+                            Image = userRequestDto.ImageProfile,
+                            Title = userRequestDto.Name.Replace(" ",  ""),
+                        });
+                        user.Name = userRequestDto.Name;
+
+                        _userRepository.UpdateUser(user);
+                    }
+                }
+                
+                return Ok("Usuário foi salvo com sucesso");
+            }
+            catch (Exception ex)
+            {
+               _logger.LogError("Ocorreu um erro ao salvar o usuário");
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponseDto()
+                {
+                    Description = $"Ocorreu o seguinte erro: {ex.Message}",
+                    Status = StatusCodes.Status500InternalServerError
+                });
+            }
+        }
     }
 }
