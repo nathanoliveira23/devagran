@@ -18,6 +18,7 @@ internal class Program
       options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
     builder.Services.AddScoped<IUserRepository, UserRepositoryImpl>();
+    builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -15,5 +15,6 @@ namespace Devagran.Context
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Follower> Followers { get; set; }
     }
 }

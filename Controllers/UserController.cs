@@ -158,7 +158,6 @@ namespace Devagran.Controllers
                         _userRepository.UpdateUser(user);
                     }
                 }
-                
                 return Ok("Usuário foi salvo com sucesso");
             }
             catch (Exception ex)
