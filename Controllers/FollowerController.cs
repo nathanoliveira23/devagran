@@ -56,7 +56,7 @@ namespace Devagran.Controllers
             }
             catch (Exception ex)
             {
-               _logger.LogError("Ocorreu um erro ao salvar o usuário");
+               _logger.LogError("Ocorreu um erro ao seguir/desseguir o usuário");
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResponseDto()
                 {
                     Description = $"Ocorreu o seguinte erro: {ex.Message}",

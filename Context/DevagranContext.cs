@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Devagran.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,5 +12,6 @@ namespace Devagran.Context
 
         public DbSet<User> Users { get; set; }
         public DbSet<Follower> Followers { get; set; }
+        public DbSet<Publication> Publications { get; set; }
     }
 }
