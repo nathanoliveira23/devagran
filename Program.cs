@@ -20,6 +20,7 @@ internal class Program
     builder.Services.AddScoped<IUserRepository, UserRepositoryImpl>();
     builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
     builder.Services.AddScoped<IPublicationRepository, PublicationRepository>();
+    builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

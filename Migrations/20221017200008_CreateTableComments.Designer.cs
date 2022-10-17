@@ -4,6 +4,7 @@ using Devagran.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Devagran.Migrations
 {
     [DbContext(typeof(DevagranContext))]
-    partial class DevagranContextModelSnapshot : ModelSnapshot
+    [Migration("20221017200008_CreateTableComments")]
+    partial class CreateTableComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,7 +94,7 @@ namespace Devagran.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PublicationId")
+                    b.Property<int>("PublicatinId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -100,7 +102,7 @@ namespace Devagran.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PublicationId");
+                    b.HasIndex("PublicatinId");
 
                     b.HasIndex("UserId");
 
@@ -170,7 +172,7 @@ namespace Devagran.Migrations
                 {
                     b.HasOne("Devagran.Models.Publication", "Publication")
                         .WithMany()
-                        .HasForeignKey("PublicationId")
+                        .HasForeignKey("PublicatinId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
